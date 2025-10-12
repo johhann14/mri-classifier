@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch
-from utils import BATCH_SIZE, SIZE, SEED, N_CLASSES
+from src.utils import BATCH_SIZE, SIZE, SEED, N_CLASSES
 
 class SimpleCNN(nn.Module):
     def __init__(self):
