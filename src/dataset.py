@@ -17,10 +17,9 @@ def get_transform(data_dir, batch_size=BATCH_SIZE, size=SIZE):
 
 def get_dataloaders(train_dir, test_dir, batch_size, seed=SEED, size=SIZE):
     train_tf = get_transform(train_dir, batch_size, size)
-    test_tf = get_transform(test_dir, batch_size, size)
 
     train_dataset = datasets.ImageFolder(root=train_dir, transform=train_tf)
-    test_dataset = datasets.ImageFolder(root=test_dir, transform=test_tf)
+    test_dataset = datasets.ImageFolder(root=test_dir, transform=train_tf)
 
     size_train = int(0.8 * len(train_dataset))
     size_val = len(train_dataset) - size_train
@@ -33,3 +32,4 @@ def get_dataloaders(train_dir, test_dir, batch_size, seed=SEED, size=SIZE):
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
     return train_loader, val_loader, test_loader
+
