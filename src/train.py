@@ -1,15 +1,18 @@
 import torch
+from tqdm.auto import tqdm
+from src.metrics_logger import new_run, log_metrics
+from src.utils import save_model, save_plots
 
 def epoch_optimization(model, device, criterion, optimizer, loader):
-    
+    print('Training')
     model.train()
     running_loss = 0
     n = 0
     total = 0
     correct = 0
 
-    for feat, label in loader:
-
+    for i, data in tqdm(enumerate(loader), total=len(loader)):
+        feat, label = data
         feat = feat.to(device)
         label = label.to(device, dtype=torch.long) # important selon la loss (verifier en détail)
 
@@ -32,12 +35,12 @@ def epoch_optimization(model, device, criterion, optimizer, loader):
     acc = correct/total
 
 
-    return running_loss, acc
+    return running_loss.item(), acc
 
 
 @torch.no_grad()
 def epoch_validation(model, device, criterion, loader):
-    
+    print('Validation')
     model.eval()
 
     running_loss = 0
@@ -45,7 +48,8 @@ def epoch_validation(model, device, criterion, loader):
     total = 0
     correct = 0
 
-    for feat, label in loader:
+    for i, data in tqdm(enumerate(loader), total=len(loader)):
+        feat, label = data
         feat = feat.to(device)
         label = label.to(device, dtype=torch.long) # important selon la loss (verifier en détail)
 
@@ -61,16 +65,28 @@ def epoch_validation(model, device, criterion, loader):
 
     running_loss/= n
     acc = correct/total
-    return running_loss, acc
+    return running_loss.item(), acc
 
 
 def training_loop(n_epochs, model, device, criterion, optimizer, train_loader, val_loader):
-    for epoch in range(n_epochs):
-        print(f"epoch number {epoch}")
-        train_loss, train_acc = epoch_optimization(model, device, criterion, optimizer, train_loader)
-        val_loss, val_acc = epoch_validation(model, device, criterion, val_loader)
-        print(f"\t Training Loss : {train_loss}")
-        print(f"\t Training Acc: {train_acc}")
-        print(f"\t Validation Loss : {val_loss}")
-        print(f"\t Validation Acc: {val_acc}")
-        print(f"\n")
+    run_dir, mcsv = new_run(root="runs")
+
+    train_loss = []
+    train_acc = []
+    val_loss = []
+    val_acc = []
+    for epoch in range(1, n_epochs + 1):
+        print(f"[INFO]: Epoch {epoch}/{n_epochs}")
+        train_epoch_loss, train_epoch_acc = epoch_optimization(model, device, criterion, optimizer, train_loader)
+        val_epoch_loss, val_epoch_acc = epoch_validation(model, device, criterion, val_loader)
+        log_metrics(mcsv, split="train", epoch=epoch, loss=train_epoch_loss, acc=train_epoch_acc)
+        log_metrics(mcsv, split="val", epoch=epoch, loss=val_epoch_loss, acc=val_epoch_acc)
+        train_loss.append(train_epoch_loss)
+        train_acc.append(train_epoch_acc)
+        val_loss.append(val_epoch_loss)
+        val_acc.append(val_epoch_acc)
+        print(f"\t Training Loss : {train_epoch_loss:.3f}, Training acc: {train_epoch_acc:.3f}")
+        print(f"\t Validation Loss : {val_epoch_loss:.3f}, Validation Acc: {val_epoch_acc:.3f}")
+        print(f"------------------------------------")
+    save_plots(path=run_dir, train_acc=train_acc, valid_acc=val_acc, train_loss=train_loss, valid_loss=val_loss)
+    save_model(path=run_dir, epochs=10, model=model, optimizer=optimizer, criterion=criterion)

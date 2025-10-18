@@ -27,11 +27,11 @@ if __name__ == "__main__":
 
 
     model = SimpleCNN()
-   # model.to(args['device'])
+    model.to(args['device'])
     
     criterion = nn.CrossEntropyLoss()
-    if args['method'] == 'adam':
+    if args['method'].lower() == 'adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=args['lr'])
-    
-    print(f"Training loop")
+    elif args['method'].lower() == 'sgd':
+        optimizer = torch.optim.SGD(model.parameters(), lr=args['lr'])
     training_loop(args['e'], model, args['device'], criterion, optimizer, train_loader, test_loader)
