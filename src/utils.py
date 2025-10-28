@@ -1,5 +1,6 @@
 from torchvision import transforms, datasets
 from torch.utils.data import DataLoader, random_split
+from PIL import Image
 import torch
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -84,4 +85,21 @@ def save_plots(path, train_acc, valid_acc, train_loss, valid_loss):
     plt.ylabel('Loss')
     plt.legend()
     plt.savefig(Path(path) / "loss.png")
+
+
+
+def show_images(dataframe, n_sample, size, mode="RGB", random_state=None):
+    plt.figure(figsize=(22,22))
+    shuffle_df = dataframe.sample(n_sample, random_state=random_state)
+    for i in range(n_sample):
+        path = shuffle_df['path'].iloc[i]
+        label = shuffle_df['label'].iloc[i]
+        index = shuffle_df.index[i]
+        plt.subplot(n_sample//4 + 1, 4, i+1)
+        img = Image.open(path).convert(mode).resize(size)
+        plt.imshow(img)
+        plt.title(str(index) + ": " + label)
+    plt.show()
+        
+
     
