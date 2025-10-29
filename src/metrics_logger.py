@@ -5,7 +5,7 @@ import random
 from src.model import SimpleCNN
 import torch.nn as nn
 import torch
-from src.utils import save_model, save_plots
+from src.utils1 import save_model, save_plots
 
 def _ts():
     return time.strftime("%Y-%m-%d %H:%M:%S")

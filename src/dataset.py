@@ -1,4 +1,4 @@
-from src.utils import BATCH_SIZE, SIZE, SEED, compute_mean_std
+from src.utils1 import BATCH_SIZE, SIZE, SEED, compute_mean_std
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms, datasets
 import torch

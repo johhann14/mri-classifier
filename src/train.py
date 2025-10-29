@@ -1,7 +1,7 @@
 import torch
 from tqdm.auto import tqdm
 from src.metrics_logger import new_run, log_metrics
-from src.utils import save_model, save_plots
+from src.utils1 import save_model, save_plots
 
 def epoch_optimization(model, device, criterion, optimizer, loader):
     print('Training')
