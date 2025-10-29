@@ -26,7 +26,6 @@ Each training is saved in `runs/`
 
 ## Personal Notes
 todo
-- add my notebooks
 - implement resume training
 - finalize inference 
 - build web app 

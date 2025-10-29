@@ -4,7 +4,7 @@ import torch
 class SimpleCNN(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv = nn.Sequential(nn.Conv2d(in_channels=3, out_channels=32, kernel_size=(4,4)), #par defaut conv:  stride = 1, padding=0
+        self.conv = nn.Sequential(nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(4,4)), #par defaut conv:  stride = 1, padding=0
                             nn.ReLU(), 
                             nn.MaxPool2d(kernel_size=3),
                             
@@ -23,7 +23,7 @@ class SimpleCNN(nn.Module):
 
         # to know the outputs size before FC layer
         with torch.no_grad():
-            tmp = torch.zeros(1, 3, 150, 150) # size of the input
+            tmp = torch.zeros(1, 1, 150, 150) # size of the input
             out = self.conv(tmp)
             out = torch.flatten(out, start_dim=1, end_dim=3)
             n_features = out.shape[-1]
@@ -37,6 +37,7 @@ class SimpleCNN(nn.Module):
         x = self.conv(x)
         x = self.fc(x)
         return x
+
 
 
 

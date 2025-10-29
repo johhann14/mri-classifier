@@ -154,8 +154,9 @@ def save_plots(path, train_acc, valid_acc, train_loss, valid_loss):
 
 def plot_PCA(df):
     columns = ['mean', 'std', 'skewness', 'kurtosis', 'entropy', 'contrast', 'energy', 'asm', 'homogeneity', 'dissimilarity', 'correlation']
-    scarler = StandardScaler()
+    scaler = StandardScaler()
     X = df[columns].values
+    X = scaler.fit_transform(X)
     pca = PCA(n_components=2)
     X_pca = pca.fit_transform(X)
     pca_df = pd.DataFrame(X_pca, columns=['PC1', 'PC2'], index=df.index)

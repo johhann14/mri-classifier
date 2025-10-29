@@ -26,13 +26,13 @@ def load(img_path, resize=None):
     x_end = x_start + target_W
     y_end = y_start + target_H
 
-    return img[y_start:y_end, x_start, x_end]
+    return img[y_start:y_end, x_start:x_end]
 
 
-def extract_features(img_path):
+def extract_features(img_path, resize=None):
     results = {}
     try:
-        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        img = load(img_path, resize=resize)
         gray_8bit = (img / np.max(img) * 255).astype(np.uint8)
 
         results['mean'] = img.mean()
@@ -62,3 +62,5 @@ def extract_features(img_path):
         print(f"Error {img_path}: {e}")
 
     return pd.Series(results)
+
+

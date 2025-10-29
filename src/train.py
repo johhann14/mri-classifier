@@ -68,9 +68,9 @@ def epoch_validation(model, device, criterion, loader):
     return running_loss.item(), acc
 
 
-def training_loop(n_epochs, model, device, criterion, optimizer, train_loader, val_loader):
-    run_dir, mcsv = new_run(root="runs")
-
+def training_loop(n_epochs, model, device, criterion, optimizer, train_loader, val_loader, root=None):
+    
+    run_dir, mcsv = new_run(root=root)
     train_loss = []
     train_acc = []
     val_loss = []

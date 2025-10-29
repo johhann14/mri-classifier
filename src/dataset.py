@@ -9,6 +9,7 @@ def get_transform(data_dir, batch_size, size):
 
     tf = transforms.Compose([
                         transforms.Resize(size),
+                        transforms.Grayscale(num_output_channels=1),
                         transforms.ToTensor(),
                         transforms.Normalize(mean=mean, std=std)]
         )

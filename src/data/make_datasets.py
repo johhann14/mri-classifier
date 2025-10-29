@@ -29,14 +29,15 @@ def compute_mean_std(data_dir, size, batch_size):
     # input has 3 channels
     transform = transforms.Compose([
                             transforms.Resize(size),
+                            transforms.Grayscale(num_output_channels=1),
                             transforms.ToTensor()]) # to tensor : HxWxC -> CxHxW
     
     dataset = datasets.ImageFolder(root=data_dir, transform=transform)
 
     loader = DataLoader(dataset=dataset, batch_size=batch_size)
 
-    mean = torch.zeros(3)
-    std = torch.zeros(3)
+    mean = torch.zeros(1)
+    std = torch.zeros(1)
     total = 0
     # mean per batch -> each batch impacts the global mean the same way = no bias 
     # bc last batch can be smaller

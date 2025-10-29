@@ -7,7 +7,7 @@ from src.dataset import get_dataloaders
 from src.train import epoch_optimization, epoch_validation, training_loop
 BATCH_SIZE = 32
 SIZE = (150,150)
-SEED = 14
+SEED = 42
 N_CLASSES = 4
 
 if __name__ == "__main__":
@@ -38,4 +38,4 @@ if __name__ == "__main__":
         optimizer = torch.optim.Adam(model.parameters(), lr=args['lr'])
     elif args['method'].lower() == 'sgd':
         optimizer = torch.optim.SGD(model.parameters(), lr=args['lr'])
-    training_loop(args['e'], model, args['device'], criterion, optimizer, train_loader, test_loader)
+    training_loop(args['e'], model, args['device'], criterion, optimizer, train_loader, test_loader, root="runs")
