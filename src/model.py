@@ -1,6 +1,5 @@
 import torch.nn as nn
 import torch
-from src.utils1 import BATCH_SIZE, SIZE, SEED, N_CLASSES
 
 class SimpleCNN(nn.Module):
     def __init__(self):
@@ -24,14 +23,14 @@ class SimpleCNN(nn.Module):
 
         # to know the outputs size before FC layer
         with torch.no_grad():
-            tmp = torch.zeros(1, 3, SIZE[0], SIZE[1])
+            tmp = torch.zeros(1, 3, 150, 150) # size of the input
             out = self.conv(tmp)
             out = torch.flatten(out, start_dim=1, end_dim=3)
             n_features = out.shape[-1]
 
         self.fc = nn.Sequential(
                             nn.Flatten(start_dim=1, end_dim=3),
-                            nn.Linear(in_features=n_features, out_features=N_CLASSES)
+                            nn.Linear(in_features=n_features, out_features=4)
         )
 
     def forward(self, x):

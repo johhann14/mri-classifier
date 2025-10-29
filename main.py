@@ -5,6 +5,10 @@ import torch.nn as nn
 from src.model import SimpleCNN
 from src.dataset import get_dataloaders
 from src.train import epoch_optimization, epoch_validation, training_loop
+BATCH_SIZE = 32
+SIZE = (150,150)
+SEED = 14
+N_CLASSES = 4
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='mri-classifier main')
@@ -23,7 +27,7 @@ if __name__ == "__main__":
     train_dir = "data/Training"
     test_dir = "data/Testing"
 
-    train_loader, val_loader, test_loader = get_dataloaders(train_dir=train_dir, test_dir=test_dir, batch_size=args['bs'])
+    train_loader, val_loader, test_loader = get_dataloaders(train_dir=train_dir, test_dir=test_dir, batch_size=args['bs'], size=SIZE, seed=SEED)
 
 
     model = SimpleCNN()

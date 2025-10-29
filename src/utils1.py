@@ -4,12 +4,8 @@ from PIL import Image
 import torch
 from pathlib import Path
 import matplotlib.pyplot as plt
-BATCH_SIZE = 32
-SIZE = (150,150)
-SEED = 42
-N_CLASSES = 4
 
-def compute_mean_std(data_dir, size=SIZE, batch_size=BATCH_SIZE):
+def compute_mean_std(data_dir, size, batch_size):
     # input has 3 channels
     transform = transforms.Compose([
                             transforms.Resize(size),

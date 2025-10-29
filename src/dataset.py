@@ -1,21 +1,21 @@
-from src.utils1 import BATCH_SIZE, SIZE, SEED, compute_mean_std
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms, datasets
 import torch
+from src.data.make_datasets import compute_mean_std
 
-def get_transform(data_dir, batch_size=BATCH_SIZE, size=SIZE):
+def get_transform(data_dir, batch_size, size):
     mean, std = compute_mean_std(data_dir=data_dir, size=size, batch_size=batch_size)
 
 
     tf = transforms.Compose([
-                        transforms.Resize(SIZE),
+                        transforms.Resize(size),
                         transforms.ToTensor(),
                         transforms.Normalize(mean=mean, std=std)]
         )
     return tf
 
 
-def get_dataloaders(train_dir, test_dir, batch_size, seed=SEED, size=SIZE):
+def get_dataloaders(train_dir, test_dir, batch_size, size, seed):
     train_tf = get_transform(train_dir, batch_size, size)
 
     train_dataset = datasets.ImageFolder(root=train_dir, transform=train_tf)

@@ -90,3 +90,5 @@ def training_loop(n_epochs, model, device, criterion, optimizer, train_loader, v
         print(f"------------------------------------")
     save_plots(path=run_dir, train_acc=train_acc, valid_acc=val_acc, train_loss=train_loss, valid_loss=val_loss)
     save_model(path=run_dir, epochs=10, model=model, optimizer=optimizer, criterion=criterion)
+
+    return train_acc, val_acc, train_loss, val_loss

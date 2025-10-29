@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import cv2
+import torch
+from pathlib import Path
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
@@ -106,6 +108,49 @@ def plot_metrics(df):
     plt.tight_layout()
     plt.show()
 
+def save_model(path, epochs, model, optimizer, criterion):
+    torch.save({
+        'epochs': epochs,
+        'model_state_dict': model.state_dict(),
+        'optimize_state_dict': optimizer.state_dict(),
+        'loss': criterion
+    }, Path(path) / "model.pth") 
+    return
+
+def save_plots(path, train_acc, valid_acc, train_loss, valid_loss):
+    """
+    Function to save the loss and accuracy plots to disk.
+    """
+    # accuracy plots
+    plt.figure(figsize=(10, 8))
+    plt.plot(
+        train_acc, color='green', linestyle='-', 
+        label='train accuracy'
+    )
+    plt.plot(
+        valid_acc, color='blue', linestyle='-', 
+        label='validation accuracy'
+    )
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.savefig(Path(path) / "accuracy.png")
+    
+    # loss plots
+    plt.figure(figsize=(10, 8))
+    plt.plot(
+        train_loss, color='orange', linestyle='-', 
+        label='train loss'
+    )
+    plt.plot(
+        valid_loss, color='red', linestyle='-', 
+        label='validataion loss'
+    )
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.savefig(Path(path) / "loss.png")
+    plt.show()
 
 def plot_PCA(df):
     columns = ['mean', 'std', 'skewness', 'kurtosis', 'entropy', 'contrast', 'energy', 'asm', 'homogeneity', 'dissimilarity', 'correlation']
